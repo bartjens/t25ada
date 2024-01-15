@@ -1,0 +1,122 @@
+{
+    "CM": {
+        "th002n": "205",
+        "th002m": "CM",
+        "th002o": "Centimeter",
+        "hl7c": "cm",
+        "t25gamvan2": "CM",
+        "th_volg": "15"
+    },
+    "DO": {
+        "th002n": "208",
+        "th002m": "DO",
+        "th002o": "Dosis",
+        "hl7c": "",
+        "t25gamvan2": "DO",
+        "th_volg": "4"
+    },
+    "E": {
+        "th002n": "211",
+        "th002m": "E",
+        "th002o": "Eenheid",
+        "hl7c": "",
+        "t25gamvan2": "EH",
+        "th_volg": "9"
+    },
+    "G": {
+        "th002n": "215",
+        "th002m": "G",
+        "th002o": "Gram",
+        "hl7c": "g",
+        "t25gamvan2": "GR",
+        "th_volg": "3"
+    },
+    "KG": {
+        "th002n": "219",
+        "th002m": "KG",
+        "th002o": "Kilogram",
+        "hl7c": "kg",
+        "t25gamvan2": "KG",
+        "th_volg": "10"
+    },
+    "L": {
+        "th002n": "222",
+        "th002m": "L",
+        "th002o": "Liter",
+        "hl7c": "l",
+        "t25gamvan2": "L",
+        "th_volg": "11"
+    },
+    "M": {
+        "th002n": "225",
+        "th002m": "M",
+        "th002o": "Meter",
+        "hl7c": "m",
+        "t25gamvan2": "M",
+        "th_volg": "12"
+    },
+    "MG": {
+        "th002n": "229",
+        "th002m": "MG",
+        "th002o": "Milligram",
+        "hl7c": "mg",
+        "t25gamvan2": "MG",
+        "th_volg": "2"
+    },
+    "ML": {
+        "th002n": "233",
+        "th002m": "ML",
+        "th002o": "Milliliter",
+        "hl7c": "ml",
+        "t25gamvan2": "ML",
+        "th_volg": "7"
+    },
+    "MM": {
+        "th002n": "234",
+        "th002m": "MM",
+        "th002o": "Millimeter",
+        "hl7c": "mm",
+        "t25gamvan2": "MM",
+        "th_volg": "8"
+    },
+    "ST": {
+        "th002n": "245",
+        "th002m": "ST",
+        "th002o": "Stuk",
+        "hl7c": "",
+        "t25gamvan2": "SK",
+        "th_volg": "1"
+    },
+    "UG": {
+        "th002n": "252",
+        "th002m": "UG",
+        "th002o": "Microgram",
+        "hl7c": "ug",
+        "t25gamvan2": "UG",
+        "th_volg": "13"
+    },
+    "UL": {
+        "th002n": "254",
+        "th002m": "UL",
+        "th002o": "Microliter",
+        "hl7c": "ul",
+        "t25gamvan2": "UL",
+        "th_volg": "14"
+    },
+    "DR": {
+        "th002n": "303",
+        "th002m": "DR",
+        "th002o": "Druppel",
+        "hl7c": "drp",
+        "t25gamvan2": "DR",
+        "th_volg": "5"
+    },
+    "VP": {
+        "th002n": "490",
+        "th002m": "VP",
+        "th002o": "Verpakking",
+        "hl7c": "",
+        "t25gamvan2": "VP",
+        "th_volg": "6"
+    }
+}
