@@ -580,7 +580,7 @@
         "hl7TijdUnit": "d",
         "hl7DagUnit": "wk",
         "adaTijdUnit": "week",
-        "adaTijdValue": "7"
+        "adaTijdValue": "1"
     },
     "WA": {
         "teMemo": "WA",
