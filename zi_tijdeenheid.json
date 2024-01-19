@@ -241,6 +241,17 @@
         "adaTijdUnit": "jaar",
         "adaTijdValue": "6"
     },
+    "JA": {
+        "teMemo": "JA",
+        "teNum": "69",
+        "teOms": "per 8 jaar",
+        "teDagOmreken": "2920",
+        "hl7TijdOmreken": "8",
+        "hl7TijdUnit": "a",
+        "hl7DagUnit": "",
+        "adaTijdUnit": "jaar",
+        "adaTijdValue": "8"
+    },
     "K": {
         "teMemo": "K",
         "teNum": "20",
