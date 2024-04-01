@@ -15,6 +15,7 @@ class Model_Ada {
 	public $_hl7GebruiksConversie = array();
 	public $_hl7BasisEenheidConversie = array();
 	public $_bCodes = array();
+	private $bCodeParsed = array();
 	private $count =0;
 
 	private $dossierData;
@@ -22,6 +23,7 @@ class Model_Ada {
 	private $xmlGebruiksInstructie;
 	private $xmlDoseerInstructie;
 	private $xmlToedienSchema;
+	private $toedienSchemas;
 	private $xmlDosering;
 	private $xmlZonodig;
 	private $xmlCriterium;
@@ -143,7 +145,11 @@ class Model_Ada {
         $this->xmlDosering = $this->createSimpleNode($this->xmlDoseerInstructie,'dosering');
 
 		$this->addDoseQuantity($this->xmlDosering, $regel);
-        $this->xmlToedienSchema = $this->createSimpleNode($this->xmlDosering,'toedieningsschema');
+        $xmlToedienSchema = $this->createSimpleNode($this->xmlDosering,'toedieningsschema');
+		//toedieningsschema is een array om meerdere referenties naar toedienschemas op te slaan.
+		//Dit omdat de dagen bij elke toedienschema wordt geincludeerd
+		$this->toedienSchemas[]= $xmlToedienSchema;
+		$this->xmlToedienSchema = $xmlToedienSchema;
 		$this->xmlFrequentie = $this->createSimpleNode($this->xmlToedienSchema,'frequentie');
 		$this->xmlFrequentieIsSet = true;
 
@@ -240,7 +246,8 @@ class Model_Ada {
 
 	private function checkBCodes($dosb) {
 
-
+		// echo "\ncheckBCodes";
+		// print_r($dosb);
         /*
             check de bcode set op categorie 108: Dagdelen.
             Als er een dagdeel tussen staat die niet gecodeerd kan worden, dan alles in aanvullende tekst.
@@ -279,9 +286,12 @@ class Model_Ada {
 			}
 
 			$stopParsing = $this->verwerkBcodeRest($bCodeOrderId,$bCode);
-			// if ($stopParsing) {
-			// 	return;
-			// }
+			if ($stopParsing) {
+				return;
+			}
+			// echo "\nAddDagDeel";
+			if (!empty($bCode['cDagDeel']))
+				$this->addDagdeel($bCode['cDagDeel']);
 
 			if ($bCode['cPatroon'] !='') {
 				$this->verwerkPatroon($bCode);
@@ -294,6 +304,9 @@ class Model_Ada {
 		$stopParsing = 0;
 		$cat = $bCode['catNhgNr'];
 		$memoCode = $bCode['t25Memo']??'';
+
+		// echo "\nverwerkBcodeRest";
+		// print_r($bCode);
 
 		switch ($cat) {
 
@@ -467,7 +480,7 @@ DDZ	Op dinsdag, donderdag en zaterdag --> Via dagen
 		$oriBcodes = $this->usedT25Instruction['b'];
 		if (strpos($memoCode,'-')) {
 			$dagDelen = explode('-',$memoCode);
-			// print_r($dagDelen);
+			//print_r($dagDelen);
 			//Ochtend
 			//voeg per item een
 			//voeg doseerinstructie toe
@@ -548,6 +561,8 @@ DDZ	Op dinsdag, donderdag en zaterdag --> Via dagen
 						case 'avond':
 						case 'nacht':
                             $this->removeElement($this->xmlFrequentie);
+							//Kennelijk moeten deze aan alle toedienschema's worden gekoppeld.
+
 							$this->createSimpleNode($this->xmlToedienSchema,'dagdeel',
 									array(
 										'code'=>$this->_snomed['dagdelen'][$dagdeel]['code'],
@@ -564,11 +579,15 @@ DDZ	Op dinsdag, donderdag en zaterdag --> Via dagen
 
 	private function addAsAanvullendeTekst($bCodeSet) {
 		// print_r($bCodeSet);
+		//als reeds toegevoegd skippen
+		if (isset($this->bCodeParsed[$bCodeSet['t25nr']]))
+			return;
 
 		if ($bCodeSet['code']??''=='OTH') {
 			$this->createSimpleNode($this->xmlGebruiksInstructie,'aanvullende_instructie',$bCodeSet);
 			return;
 		}
+		$this->bCodeParsed[$bCodeSet['t25nr']] = 1;
 		$this->createSimpleNode($this->xmlGebruiksInstructie,'aanvullende_instructie',
 			array(
 				'code'=>$bCodeSet['t25nr'],
@@ -614,12 +633,18 @@ DDZ	Op dinsdag, donderdag en zaterdag --> Via dagen
 				case 'vrijdag':
 				case 'zaterdag':
 				case 'zondag':
-					$this->createSimpleNode($this->xmlToedienSchema,'weekdag',
-					array(
-						'code'=>$this->_snomed['weekdagen'][$dagdeel]['code'],
-						'codeSystem'=>'2.16.840.1.113883.6.96',
-						'displayName'=>$this->_snomed['weekdagen'][$dagdeel]['display'])
-						);
+					// print_r($this->toedienSchemas);
+					//We moeten de dagen voor elk toedienschema toevoegen
+					foreach ($this->toedienSchemas as $xmlToedienSchema) {
+						if (isset($xmlToedienSchema->tagName)) {
+							$this->createSimpleNode($xmlToedienSchema,'weekdag',
+							array(
+								'code'=>$this->_snomed['weekdagen'][$dagdeel]['code'],
+								'codeSystem'=>'2.16.840.1.113883.6.96',
+								'displayName'=>$this->_snomed['weekdagen'][$dagdeel]['display'])
+								);
+						}
+					}
 					break;
 			}
 		}
