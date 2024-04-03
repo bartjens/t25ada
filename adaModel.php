@@ -188,6 +188,7 @@ class Model_Ada {
 
 	private function parseTimePart($comp) {
 
+		$X = $comp['X']??'';
 		$Y = $comp['Y']??'';
 		$t = $comp['t']??'';
 		if (empty($comp['t'])) {
@@ -202,8 +203,11 @@ class Model_Ada {
 
 			$this->xmlFrequentieIsSet=false;
 			$this->removeElement($this->xmlFrequentie);
-
-			$this->createSimpleNode($this->xmlToedienSchema,'interval',array('value'=>$omreken, 'unit'=>$unit));
+			if ($X<=1)
+				$this->createSimpleNode($this->xmlToedienSchema,'interval',array('value'=>$omreken, 'unit'=>$unit));
+			if ($X>1) {
+				$this->createSimpleNode($this->xmlToedienSchema,'interval',array('value'=>60/$X, 'unit'=>'minuut'));
+			}
 		} else {
 			if (!$this->xmlFrequentieIsSet)
 				$this->xmlFrequentie = $this->createSimpleNode($this->xmlToedienSchema,'frequentie');
